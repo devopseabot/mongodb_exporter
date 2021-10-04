@@ -1,9 +1,16 @@
 language: shell
 os: linux
 services:
-- docker
+  - docker
 install:
-- git clone https://github.com/percona/mongodb_exporter.git --branch v0.11.2
+  - git clone https://github.com/percona/mongodb_exporter.git
+  - cp Dockerfile mongodb_exporter/
 script:
-- cd mongodb_exporter
-- docker build .
+  - cd mongodb_exporter
+  - docker build -t asia.gcr.io/devopsea-infra/mongodb_exporter:$(git describe --abbrev=0 --tags) .
+before_deploy:
+  - echo "$GCR_RW" | base64 --decode | docker login -u "_json_key" --password-stdin asia.gcr.io
+deploy:
+  cleanup: false
+  provider: script
+  script: docker push eu.gcr.io/dev-econo-cm/mongodb_exporter:$(git describe --abbrev=0 --tags)
