@@ -13,4 +13,4 @@ before_deploy:
 deploy:
   cleanup: false
   provider: script
-  script: docker push eu.gcr.io/dev-econo-cm/mongodb_exporter:$(git describe --abbrev=0 --tags)
+  script: docker push asia.gcr.io/devopsea-infra/mongodb_exporter:$(git describe --abbrev=0 --tags)
